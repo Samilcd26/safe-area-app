@@ -3,56 +3,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:safe_area/Core/image_cached.dart';
+import 'package:safe_area/Data/Models/user_model.dart';
+import 'package:safe_area/Data/State/main_controller.dart';
+import 'package:safe_area/Screens/note/note_page.dart';
 import 'package:safe_area/Screens/session/session_page.dart';
 import 'package:safe_area/setting/color.dart';
 
 class SinglePage extends StatefulWidget {
-  const SinglePage({super.key});
-
+  SinglePage({super.key});
+  final _controller = Get.put(MainController());
   @override
   State<SinglePage> createState() => _SinglePageState();
 }
 
 class _SinglePageState extends State<SinglePage> {
+  final UserModel testUser = UserModel(id: 123456, userName: "Ahmet CanServer", phone: 1234567, verified: true);
+  final UserModel testUser2 = UserModel(id: 654321, userName: "Sinan Aktaş", phone: 7654321, verified: true);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SessionView(title: "My Notebook", date: '14/Mon', customIcon: Icons.note_add_sharp, isNoteMod: true),
+        SessionView(user: widget._controller.currentUser, fromUser: widget._controller.currentUser, isNoteMod: true),
+        SessionView(user: testUser, fromUser: testUser2, isNoteMod: false),
+        SessionView(user: testUser2, fromUser: testUser, isNoteMod: false),
       ],
     );
   }
 }
 
 class SessionView extends StatelessWidget {
-  const SessionView({super.key, required this.title, required this.date, this.customIcon, required this.isNoteMod});
+  const SessionView({super.key, required this.user, required this.fromUser, required this.isNoteMod});
 
-  final String title;
-  final String date;
-  final IconData? customIcon;
+  final UserModel user;
+  final UserModel fromUser;
   final bool isNoteMod;
   @override
   Widget build(BuildContext context) {
+    final String? currentLoc = View.of(context).platformDispatcher.locale.countryCode;
+    final _controller = Get.put(MainController());
     return InkWell(
       onTap: () {
-        isNoteMod ? Get.to(SessionPage()) : "";
+        if (!isNoteMod) {
+          _controller.createRoom(currentLoc, user);
+          Get.to(SessionPage(
+            toUser: user,
+            fromUser: fromUser,
+          ));
+        } else {
+          Get.to(NotePage());
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(13)), color: Color(COLORS.primalGrey)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(13)), color: Color(isNoteMod ? COLORS.primalGrey : COLORS.black)),
           height: 90,
           width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Row(
               children: [
-                if (customIcon != null) ...{
-                  Expanded(
+                if (isNoteMod) ...{
+                  const Expanded(
                       flex: 1,
-                      child: Container(
+                      child: SizedBox(
                           height: 70,
-                          child: CircleAvatar(backgroundColor: Colors.purple, child: Icon(customIcon, size: 40, color: Colors.white)))),
+                          child: CircleAvatar(
+                              backgroundColor: Colors.purple, child: Icon(Icons.note_add_sharp, size: 40, color: Colors.white)))),
                 } else ...{
                   Expanded(
                     flex: 1,
@@ -74,10 +93,10 @@ class SessionView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              title,
+                              isNoteMod ? "MyNotes" : user.userName,
                               style: TextStyle(fontSize: 20),
                             ),
-                            Text(date),
+                            Text("Mon/14"),
                           ],
                         ),
                       )

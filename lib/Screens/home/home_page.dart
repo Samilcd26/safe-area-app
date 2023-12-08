@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,

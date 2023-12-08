@@ -30,15 +30,25 @@ environment:
 dependencies:
   cached_network_image: ^3.3.0
   cupertino_icons: ^1.0.2
+  dio: ^5.3.3
+  emoji_picker_flutter: ^1.6.3
   flutter:
     sdk: flutter
+  freezed: ^2.4.5
+  freezed_annotation: ^2.4.1
   get: ^4.6.6
+  image_picker: ^1.0.4
+  json_annotation: ^4.8.1
+  persistent_bottom_nav_bar: ^5.0.2
   socket_io_client: ^2.0.3+1
+  sqflite: ^2.3.0
 
 dev_dependencies:
+  build_runner: ^2.4.6
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.7.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

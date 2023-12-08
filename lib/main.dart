@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safe_area/Screens/home/home_page.dart';
+import 'package:safe_area/Screens/root.dart';
 import 'package:safe_area/Screens/session/session_page.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:safe_area/setting/theme/themes.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: isLight ? ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black) : THEMES.lightMod,
       title: 'Material App',
-      home: Scaffold(body: HomePage()),
+      home: Scaffold(body: RootPage()),
     );
   }
 }
