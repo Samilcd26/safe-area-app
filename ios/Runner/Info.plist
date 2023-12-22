@@ -32,6 +32,10 @@
 	<string>NSPhotoLibraryUsageDescription</string>
 	<key>asdasd</key>
 	<!-- *** -->
+	<!-- flutter_contacts Permition -->
+	<key>NSContactsUsageDescription</key>
+    <string>Reason we need access to the contact list</string>
+	<!-- *** -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

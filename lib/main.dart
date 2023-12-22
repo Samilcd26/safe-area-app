@@ -1,27 +1,41 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safe_area/Screens/home/home_page.dart';
-import 'package:safe_area/Screens/root.dart';
-import 'package:safe_area/Screens/session/session_page.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:safe_area/setting/theme/themes.dart';
 
-void main() => runApp(GetMaterialApp(
-      home: MyApp(),
-    ));
+import 'package:safe_area/core/Data/Database/hive_database_manager.dart';
+
+import 'package:safe_area/ui/Screens/splash/splash_screen.dart';
+import 'package:safe_area/ui/theme/my_themes.dart';
+
+final class _AppInitialize {
+  _AppInitialize._();
+
+  static Future<void> initialize() async {
+    await HiveDatabaseManager().Initialize();
+  }
+}
+
+Future<void> main() async {
+  await _AppInitialize.initialize();
+
+  runApp(
+    GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.system,
+        theme: MyAppThemes.lightTheme,
+        darkTheme: MyAppThemes.darkTheme,
+        home: const MyApp()),
+  );
+}
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isLight = MediaQuery.of(context).platformBrightness != Brightness.dark ? false : true;
-    print(isLight);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: isLight ? ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black) : THEMES.lightMod,
-      title: 'Material App',
-      home: Scaffold(body: RootPage()),
+    return const MaterialApp(
+      home: SplashScreen(),
     );
   }
 }
