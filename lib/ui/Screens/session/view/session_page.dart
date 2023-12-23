@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:math';
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,8 @@ import 'package:safe_area/core/Data/Models/message_model.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:safe_area/ui/Screens/home/view/home_page.dart';
-import 'package:safe_area/ui/Screens/session/session_page_mixin.dart';
+import 'package:safe_area/ui/Screens/session/view/tool_box.dart';
+import 'package:safe_area/ui/Screens/session/viewModel/session_page_mixin.dart';
 import 'package:safe_area/ui/theme/constants.dart';
 
 class SessionPage extends StatefulWidget {
@@ -146,11 +149,13 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                                     //goToEnd();
                                   },
                                   onChanged: (value) {
-                                    if (value == "") {
-                                      inText = false;
-                                    } else {
-                                      inText = true;
-                                    }
+                                    setState(() {
+                                      if (value == "") {
+                                        inText = true;
+                                      } else {
+                                        inText = false;
+                                      }
+                                    });
                                   },
                                   onEditingComplete: () {},
                                   onSubmitted: (value) {
@@ -164,6 +169,7 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                                       hintStyle: TextStyle(color: CupertinoColors.systemGrey)),
                                 ),
                               ),
+
                               //* Emoji picker opening
                               Expanded(
                                   flex: 1,
@@ -179,7 +185,7 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                                         });
                                       },
                                       icon: Icon(CupertinoIcons.smiley),
-                                      color: CupertinoColors.systemGrey)),
+                                      color: CupertinoColors.systemGrey))
                             ],
                           ),
                         ),
@@ -191,7 +197,7 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                       child: CircleAvatar(
                           backgroundColor: CupertinoColors.activeGreen,
                           child: Icon(
-                            inText ? Icons.send_rounded : CupertinoIcons.mic_solid,
+                            inText ? CupertinoIcons.mic_solid : Icons.send_rounded,
                             size: 25,
                             color: Colors.white,
                           ))),
@@ -208,14 +214,7 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
             child: EmojiSelector(),
           )
         ] else if (keyboardType == KEYBOARD_TYPE.TOOLBOX) ...[
-          SizedBox(
-            height: 250,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              color: Colors.amber,
-              child: Text("sasd"),
-            ),
-          )
+          ToolBoxPart()
         ]
       ],
     );

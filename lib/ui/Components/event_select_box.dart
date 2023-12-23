@@ -7,7 +7,7 @@ import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:safe_area/core/Data/State/main_controller.dart';
 import 'package:safe_area/core/Feature/image_cached.dart';
 
-import 'package:safe_area/ui/Screens/session/session_page.dart';
+import 'package:safe_area/ui/Screens/session/view/session_page.dart';
 import 'package:safe_area/ui/theme/constants.dart';
 
 class EventSelectBox extends StatelessWidget {

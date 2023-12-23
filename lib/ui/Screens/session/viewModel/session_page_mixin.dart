@@ -83,10 +83,6 @@ mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
   void goToPageEnd() {
     listViewCont.jumpTo(listViewCont.position.maxScrollExtent);
   }
-
-  Future pickImageFromGallery() async {
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-  }
 }
 
-enum KEYBOARD_TYPE { TOOLBOX, TEXTFIELD, EMOJIPICKER, EMPTY }
+enum KEYBOARD_TYPE { TOOLBOX, TEXTFIELD, EMOJIPICKER, AUDIO, EMPTY }
