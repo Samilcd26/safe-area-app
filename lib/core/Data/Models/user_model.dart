@@ -16,14 +16,20 @@ abstract class UserModel extends HiveObject with _$UserModel {
     @HiveField(0) required int id,
     @HiveField(1) required String userName,
     @HiveField(2) required int phone,
-    @HiveField(3) required bool verified,
+    @HiveField(3) required List<int> questList,
+    @HiveField(4) required bool publisher,
   }) = _UserModel;
 
   factory UserModel.fromContact(Contact contact) {
-    final int phone = int.parse(contact.phones.first.number.replaceAll(' ', '').substring(1));
+    //TODO:
+    final int phone = int.parse(contact.phones.first.number.replaceAll(' ', '').replaceAll('-', '').replaceAll('+', '').substring(1));
 
-    return UserModel(id: phone, userName: contact.displayName, phone: phone, verified: false);
+    return UserModel(id: phone, userName: contact.displayName, phone: phone, publisher: false, questList: []);
   }
 
   factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);
+
+  bool contains(int id) {
+    return questList.contains(id);
+  }
 }

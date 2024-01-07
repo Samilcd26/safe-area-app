@@ -7,6 +7,16 @@ class ExplorePage extends StatelessWidget {
   bool _devMod = true;
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.black, child: Center(child: Text("Bu Gelecek")));
+    return Column(
+      children: [
+        InkWell(
+          child: Container(
+            width: 60,
+            height: 60,
+            color: Colors.amber,
+          ),
+        )
+      ],
+    );
   }
 }

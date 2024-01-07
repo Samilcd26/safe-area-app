@@ -6,9 +6,7 @@ import 'package:safe_area/core/Data/Models/message_model.dart';
 class StreamMessage {
   final _messageController = StreamController<MessageModel>.broadcast();
 
-  Stream<MessageModel> getResponse() {
-    return _messageController.stream;
-  }
+  Stream<MessageModel> getResponse() => _messageController.stream;
 
   void addResponse(event) {
     var msg = MessageModel.fromJson(event);

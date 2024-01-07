@@ -1,6 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
-
-import 'dart:math';
+// ignore_for_file: non_constant_identifier_names, curly_braces_in_flow_control_structures
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,96 +8,73 @@ import 'package:get/get.dart';
 import 'package:safe_area/core/Data/Models/message_model.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:safe_area/ui/Screens/home/view/home_page.dart';
-import 'package:safe_area/ui/Screens/session/view/tool_box.dart';
+
+import 'package:safe_area/ui/Screens/session/component/tool_box.dart';
 import 'package:safe_area/ui/Screens/session/viewModel/session_page_mixin.dart';
 import 'package:safe_area/ui/theme/constants.dart';
 
-class SessionPage extends StatefulWidget {
-  SessionPage({super.key, required this.toUser});
+class SessionPage extends StatelessWidget with SessionPageMixin {
+  SessionPage({super.key, required this.toUser}) {}
+  // ignore: empty_constructor_bodies
   UserModel toUser;
-
-  @override
-  State<SessionPage> createState() => _SessionPageState();
-}
-
-class _SessionPageState extends State<SessionPage> with SessionPageMixin {
-  @override
-  void initState() {
-    super.initState();
-    SessionPageInit(widget.toUser.phone.toString());
-  }
+  get bottomInputBar => Get.height * 0.08;
 
   @override
   Widget build(BuildContext context) {
+    SessionPageInit(toUser.phone.toString());
     final UserModel currentUser = controller.currentUser;
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
 
-        appBar: appBar(widget.toUser.userName)
+        appBar: appBar(context, toUser.userName),
         //* AppBar
-        ,
         //? **************************************************************
-        body:
-            //* BODY
-
-            PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) {
-            if (keyboardType != KEYBOARD_TYPE.EMPTY) {
-              keyboardType = KEYBOARD_TYPE.EMPTY;
-              didPop = false;
-            } else {
-              //
-            }
-          },
-          child: Stack(alignment: Alignment.bottomCenter, children: [
-            //* Message TextFiled
-            SizedBox(
-              height: Get.height * 0.90,
-              child:
-                  //* Message List
-                  Padding(
-                      padding: EdgeInsets.only(bottom: Get.height * 0.10),
-                      child: StreamBuilder<MessageModel>(
-                        stream: controller.getStreamData(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            messages = [...messages, snapshot.data!];
-                          }
-                          //snapshot.data != null ? _messages.add(snapshot.data) : "";
-                          return ListView(
-                              controller: listViewCont,
-                              children: messages
-                                  .expand((msg) => [
-                                        if (msg.from == currentUser.phone) ...[
-                                          MessageBox(message: msg.message, isSee: msg.isSee, sendDate: msg.sendDate, own: false)
-                                        ]
-                                        //*
-                                        else if (msg.from == widget.toUser.phone) ...[
-                                          MessageBox(message: msg.message, isSee: msg.isSee, sendDate: msg.sendDate, own: true)
-                                          //LeftClient(message: msg.message, isSee: msg.isSee, sendDate: msg.sendDate)
-                                        ]
-                                      ])
-                                  .toList());
-                        },
-                      )),
+        body: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: controller.getStreamData(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    messages = [...messages, snapshot.data];
+                  }
+                  return ListView.builder(
+                    controller: scrollController,
+                    itemCount: messages.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == messages.length) {
+                        return Container(height: 70);
+                      }
+                      if (messages[index].from == currentUser.phone) {
+                        return MessageBox(
+                            message: messages[index].message, isSee: messages[index].isSee, sendDate: messages[index].sendDate, own: false);
+                      } else if (messages[index].from == currentUser.phone) {
+                        return MessageBox(
+                            message: messages[index].message, isSee: messages[index].isSee, sendDate: messages[index].sendDate, own: true);
+                      }
+                    },
+                  );
+                },
+              ),
             ),
-            bottomBar(currentUser)
-          ]),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: bottomBar(context, currentUser),
+            )
+          ],
         ),
       ),
     );
   }
 
-  Widget bottomBar(UserModel currentUser) {
+  Widget bottomBar(BuildContext context, UserModel currentUser) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-          height: Get.height * 0.08,
+          height: bottomInputBar,
           color: Colors.black,
           child: Container(
             decoration: const BoxDecoration(border: BorderDirectional(top: BorderSide(color: COLORS.primalGrey))),
@@ -108,25 +83,21 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
               child: Row(
                 children: [
                   //* Open to toolbox
-                  Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        icon: const Icon(
-                          CupertinoIcons.add_circled,
-                          size: SIZE.iconSize,
-                        ),
-                        color: CupertinoColors.systemGrey,
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            if (keyboardType != KEYBOARD_TYPE.TOOLBOX) {
-                              keyboardType = KEYBOARD_TYPE.TOOLBOX;
-                            } else {
-                              keyboardType = KEYBOARD_TYPE.EMPTY;
-                            }
-                          });
-                        },
-                      )),
+                  ValueListenableBuilder(
+                    valueListenable: keyboardNotifier,
+                    builder: (BuildContext context, dynamic value, Widget? child) {
+                      return Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            icon: const Icon(
+                              CupertinoIcons.add_circled,
+                              size: SIZE.iconSize,
+                              color: CupertinoColors.systemGrey,
+                            ),
+                            onPressed: () => chanceKeyboardType(KEYBOARD_TYPE.TOOLBOX),
+                          ));
+                    },
+                  ),
                   //* Message TextField
                   Expanded(
                       flex: 5,
@@ -139,31 +110,19 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                               Expanded(
                                 flex: 6,
                                 child: TextField(
+                                  focusNode: focusNode,
                                   controller: messageInputController,
                                   minLines: 1,
                                   maxLines: 5,
-                                  onTap: () {
-                                    setState(() {
-                                      keyboardType = KEYBOARD_TYPE.TEXTFIELD;
-                                    });
-                                    //goToEnd();
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value == "") {
-                                        inText = true;
-                                      } else {
-                                        inText = false;
-                                      }
-                                    });
-                                  },
+                                  //onTap: () => chanceKeyboardType(KEYBOARD_TYPE.TEXTFIELD),
+                                  onChanged: (value) => chanceTextInputStatus(value),
                                   onEditingComplete: () {},
                                   onSubmitted: (value) {
-                                    if (value.trim().isNotEmpty) sendMessage(currentUser, widget.toUser, value.trim());
+                                    if (value.trim().isNotEmpty) sendMessage(currentUser, toUser, value.trim());
                                   },
                                   textInputAction: TextInputAction.send,
                                   keyboardType: TextInputType.multiline,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Type a message",
                                       hintStyle: TextStyle(color: CupertinoColors.systemGrey)),
@@ -174,18 +133,9 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                               Expanded(
                                   flex: 1,
                                   child: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          FocusScope.of(context).unfocus();
-                                          if (keyboardType != KEYBOARD_TYPE.EMOJIPICKER) {
-                                            keyboardType = KEYBOARD_TYPE.EMOJIPICKER;
-                                          } else {
-                                            keyboardType = KEYBOARD_TYPE.EMPTY;
-                                          }
-                                        });
-                                      },
+                                      onPressed: () => chanceKeyboardType(KEYBOARD_TYPE.EMOJIPICKER),
                                       icon: Icon(CupertinoIcons.smiley),
-                                      color: CupertinoColors.systemGrey))
+                                      color: CupertinoColors.systemGrey)),
                             ],
                           ),
                         ),
@@ -195,55 +145,55 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
                   Expanded(
                       flex: 1,
                       child: CircleAvatar(
-                          backgroundColor: CupertinoColors.activeGreen,
-                          child: Icon(
-                            inText ? CupertinoIcons.mic_solid : Icons.send_rounded,
-                            size: 25,
-                            color: Colors.white,
-                          ))),
+                        backgroundColor: CupertinoColors.activeGreen,
+                        child: ValueListenableBuilder(
+                          valueListenable: textInputActiveNotifier,
+                          builder: (BuildContext context, dynamic value, Widget? child) {
+                            return Icon(
+                              textInputActiveNotifier.value ? Icons.send_rounded : CupertinoIcons.mic_solid,
+                              size: 25,
+                              color: Colors.white,
+                            );
+                          },
+                        ),
+                      )),
                 ],
               ),
             ),
           ),
         ),
-
-        //* Emoji Picker
-        if (keyboardType == KEYBOARD_TYPE.EMOJIPICKER) ...[
-          SizedBox(
-            height: 250,
-            child: EmojiSelector(),
-          )
-        ] else if (keyboardType == KEYBOARD_TYPE.TOOLBOX) ...[
-          ToolBoxPart()
-        ]
+//* Emoji & ToolBox Picker
+        ValueListenableBuilder(
+          valueListenable: keyboardNotifier,
+          builder: (BuildContext context, dynamic value, Widget? child) {
+            if (keyboardNotifier.value == KEYBOARD_TYPE.EMOJIPICKER) {
+              return SizedBox(
+                height: 250,
+                child: EmojiSelector(context),
+              );
+            } else if (keyboardNotifier.value == KEYBOARD_TYPE.TOOLBOX) {
+              return ToolBoxPart();
+            } else
+              return const SizedBox();
+          },
+        ),
       ],
     );
   }
 
-  AppBar appBar(String userName) {
+  AppBar appBar(BuildContext context, String userName) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
-          child: Container(
-            color: COLORS.primalOrange,
-            height: 1.0,
-          )),
+      bottom: PreferredSize(preferredSize: const Size.fromHeight(4.0), child: Container(color: COLORS.primalOrange, height: 1.0)),
       leading: IconButton(
-        onPressed: () {
-          //? Return to home page
-          Get.offAll(HomePage());
-        },
-        icon: const Icon(
-          Icons.arrow_back_rounded,
-          size: 32,
-        ),
+        onPressed: () => Get.back(),
+        icon: const Icon(Icons.arrow_back_rounded, size: 32),
         color: COLORS.primalOrange,
       ),
       title: Text(userName),
       actions: [
-        IconButton(icon: const Icon(Icons.delete_forever_rounded, size: 30), onPressed: SessionDisposeDialog),
+        IconButton(icon: const Icon(Icons.delete_forever_rounded, size: 30), onPressed: () => SessionDisposeDialog(context)),
         const SizedBox(width: 10),
         const Icon(Icons.more_vert_outlined, size: 30),
         const SizedBox(width: 10)
@@ -251,7 +201,7 @@ class _SessionPageState extends State<SessionPage> with SessionPageMixin {
     );
   }
 
-  Widget EmojiSelector() {
+  Widget EmojiSelector(BuildContext context) {
     return EmojiPicker(
       onEmojiSelected: (category, emoji) {},
       onBackspacePressed: () {
@@ -337,9 +287,7 @@ class MessageBox extends StatelessWidget {
   }
 }
 
-
 // ignore: camel_case_types
-
 
 //* WHATSAPP Style
 /*

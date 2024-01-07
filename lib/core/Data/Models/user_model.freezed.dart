@@ -27,7 +27,9 @@ mixin _$UserModel {
   @HiveField(2)
   int get phone => throw _privateConstructorUsedError;
   @HiveField(3)
-  bool get verified => throw _privateConstructorUsedError;
+  List<int> get questList => throw _privateConstructorUsedError;
+  @HiveField(4)
+  bool get publisher => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +46,8 @@ abstract class $UserModelCopyWith<$Res> {
       {@HiveField(0) int id,
       @HiveField(1) String userName,
       @HiveField(2) int phone,
-      @HiveField(3) bool verified});
+      @HiveField(3) List<int> questList,
+      @HiveField(4) bool publisher});
 }
 
 /// @nodoc
@@ -63,7 +66,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? id = null,
     Object? userName = null,
     Object? phone = null,
-    Object? verified = null,
+    Object? questList = null,
+    Object? publisher = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -78,9 +82,13 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as int,
-      verified: null == verified
-          ? _value.verified
-          : verified // ignore: cast_nullable_to_non_nullable
+      questList: null == questList
+          ? _value.questList
+          : questList // ignore: cast_nullable_to_non_nullable
+              as List<int>,
+      publisher: null == publisher
+          ? _value.publisher
+          : publisher // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -98,7 +106,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
       {@HiveField(0) int id,
       @HiveField(1) String userName,
       @HiveField(2) int phone,
-      @HiveField(3) bool verified});
+      @HiveField(3) List<int> questList,
+      @HiveField(4) bool publisher});
 }
 
 /// @nodoc
@@ -115,7 +124,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? userName = null,
     Object? phone = null,
-    Object? verified = null,
+    Object? questList = null,
+    Object? publisher = null,
   }) {
     return _then(_$UserModelImpl(
       id: null == id
@@ -130,9 +140,13 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as int,
-      verified: null == verified
-          ? _value.verified
-          : verified // ignore: cast_nullable_to_non_nullable
+      questList: null == questList
+          ? _value._questList
+          : questList // ignore: cast_nullable_to_non_nullable
+              as List<int>,
+      publisher: null == publisher
+          ? _value.publisher
+          : publisher // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -146,8 +160,10 @@ class _$UserModelImpl extends _UserModel {
       {@HiveField(0) required this.id,
       @HiveField(1) required this.userName,
       @HiveField(2) required this.phone,
-      @HiveField(3) required this.verified})
-      : super._();
+      @HiveField(3) required final List<int> questList,
+      @HiveField(4) required this.publisher})
+      : _questList = questList,
+        super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -161,13 +177,22 @@ class _$UserModelImpl extends _UserModel {
   @override
   @HiveField(2)
   final int phone;
+  final List<int> _questList;
   @override
   @HiveField(3)
-  final bool verified;
+  List<int> get questList {
+    if (_questList is EqualUnmodifiableListView) return _questList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_questList);
+  }
+
+  @override
+  @HiveField(4)
+  final bool publisher;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, userName: $userName, phone: $phone, verified: $verified)';
+    return 'UserModel(id: $id, userName: $userName, phone: $phone, questList: $questList, publisher: $publisher)';
   }
 
   @override
@@ -179,13 +204,16 @@ class _$UserModelImpl extends _UserModel {
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.verified, verified) ||
-                other.verified == verified));
+            const DeepCollectionEquality()
+                .equals(other._questList, _questList) &&
+            (identical(other.publisher, publisher) ||
+                other.publisher == publisher));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userName, phone, verified);
+  int get hashCode => Object.hash(runtimeType, id, userName, phone,
+      const DeepCollectionEquality().hash(_questList), publisher);
 
   @JsonKey(ignore: true)
   @override
@@ -206,7 +234,8 @@ abstract class _UserModel extends UserModel {
       {@HiveField(0) required final int id,
       @HiveField(1) required final String userName,
       @HiveField(2) required final int phone,
-      @HiveField(3) required final bool verified}) = _$UserModelImpl;
+      @HiveField(3) required final List<int> questList,
+      @HiveField(4) required final bool publisher}) = _$UserModelImpl;
   _UserModel._() : super._();
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -223,7 +252,10 @@ abstract class _UserModel extends UserModel {
   int get phone;
   @override
   @HiveField(3)
-  bool get verified;
+  List<int> get questList;
+  @override
+  @HiveField(4)
+  bool get publisher;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

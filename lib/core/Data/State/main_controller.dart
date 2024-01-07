@@ -18,11 +18,9 @@ class MainController extends GetxController {
   List<MessageModel> messageList = [];
   SessionModel? currentSession;
   List<SessionModel> allSessionList = <SessionModel>[].obs;
-  UserModel currentUser = Rx(UserModel(id: 1, userName: "Ahmet T", phone: 5530146669, verified: true))();
+  UserModel currentUser = Rx(UserModel(id: 1, userName: "Ahmet T", phone: 5530146669, publisher: true, questList: [66666]))();
 
-  Stream<MessageModel> getStreamData() {
-    return _service.getStreamMessage.getResponse();
-  }
+  Stream<MessageModel> getStreamData() => _service.getStreamMessage.getResponse();
 
   Future<void> initialize() async {
     await getSessionData();

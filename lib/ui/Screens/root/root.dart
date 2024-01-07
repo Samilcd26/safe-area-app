@@ -4,6 +4,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:safe_area/ui/Screens/call/call_history_page.dart';
 import 'package:safe_area/ui/Screens/explore/explore_page.dart';
 import 'package:safe_area/ui/Screens/home/view/home_page.dart';
+import 'package:safe_area/ui/Screens/producer/producer_profile.dart';
 
 import 'package:safe_area/ui/Screens/profile/profile_page.dart';
 import 'package:safe_area/ui/Screens/root/root_mixin.dart';
@@ -22,7 +23,7 @@ class _RootPageState extends State<RootPage> with RootMixin {
     return [
       const HomePage(),
       CallHistoryPage(),
-      ExplorePage(),
+      ProducerProfilePage(),
       const ProfilePage(),
     ];
   }

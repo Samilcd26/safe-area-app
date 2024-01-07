@@ -11,10 +11,10 @@ import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:safe_area/core/Data/State/main_controller.dart';
 import 'package:safe_area/ui/Screens/home/view/home_page.dart';
 
-mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
+mixin SessionPageMixin<T extends StatelessWidget> {
   final SessionHiveOperation _databaseOperation = SessionHiveOperation();
   MainController controller = Get.put(MainController());
-
+  FocusNode focusNode = FocusNode();
   double toolPageHeigh = 0;
   KEYBOARD_TYPE keyboardType = KEYBOARD_TYPE.EMPTY;
   bool inText = false;
@@ -24,9 +24,11 @@ mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
   List<MessageModel> messages = [];
   bool toolPage = true;
 
-  final ScrollController listViewCont = ScrollController();
+  final ScrollController scrollController = ScrollController();
   final TextEditingController messageInputController = TextEditingController();
 
+  final ValueNotifier<KEYBOARD_TYPE> keyboardNotifier = ValueNotifier<KEYBOARD_TYPE>(KEYBOARD_TYPE.EMPTY);
+  final ValueNotifier<bool> textInputActiveNotifier = ValueNotifier<bool>(false);
   //!controller.currentUser ↓↓↓
 
   void SessionPageInit(String toUserPhone) {
@@ -34,7 +36,6 @@ mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
     if (controller.currentSession != null) {
       messages = controller.currentSession!.messageList;
     }
-    print(messages);
   }
 
   List<MessageModel>? getMessageList(String key) {
@@ -42,6 +43,7 @@ mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
   }
 
   void sendMessage(UserModel fromUser, UserModel toUser, String message) {
+    goToPageEnd();
     MessageModel msg = MessageModel(
         id: 5,
         message: message,
@@ -55,7 +57,7 @@ mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
     controller.sendMessage(toUser, msg);
   }
 
-  Future<dynamic> SessionDisposeDialog() {
+  Future<dynamic> SessionDisposeDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -81,7 +83,30 @@ mixin SessionPageMixin<T extends StatefulWidget> on State<T> {
   }
 
   void goToPageEnd() {
-    listViewCont.jumpTo(listViewCont.position.maxScrollExtent);
+    scrollController.animateTo(scrollController.position.maxScrollExtent, duration: Duration(microseconds: 300), curve: Curves.easeOut);
+  }
+
+  void chanceTextInputStatus(String text) {
+    if (text == "") {
+      textInputActiveNotifier.value = false;
+    } else {
+      textInputActiveNotifier.value = true;
+    }
+  }
+
+  void chanceKeyboardType(KEYBOARD_TYPE type) {
+    if (type != keyboardNotifier.value) {
+      focusNode.unfocus();
+      keyboardNotifier.value = type;
+    } else if (type == keyboardNotifier.value) {
+      keyboardNotifier.value = KEYBOARD_TYPE.EMPTY;
+    }
+    // if (keyboardNotifier.value != type) {
+    //   keyboardNotifier.value = type;
+    // } else {
+    //   keyboardNotifier.value = KEYBOARD_TYPE.EMPTY;
+    //   focusNode.unfocus();
+    // }
   }
 }
 
