@@ -3,7 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:safe_area/core/Data/Database/model/session_hive_operation.dart';
 import 'package:safe_area/core/Data/Models/message_model.dart';
@@ -96,17 +95,11 @@ mixin SessionPageMixin<T extends StatelessWidget> {
 
   void chanceKeyboardType(KEYBOARD_TYPE type) {
     if (type != keyboardNotifier.value) {
-      focusNode.unfocus();
+      if (type != KEYBOARD_TYPE.TEXTFIELD) focusNode.unfocus();
       keyboardNotifier.value = type;
     } else if (type == keyboardNotifier.value) {
       keyboardNotifier.value = KEYBOARD_TYPE.EMPTY;
     }
-    // if (keyboardNotifier.value != type) {
-    //   keyboardNotifier.value = type;
-    // } else {
-    //   keyboardNotifier.value = KEYBOARD_TYPE.EMPTY;
-    //   focusNode.unfocus();
-    // }
   }
 }
 

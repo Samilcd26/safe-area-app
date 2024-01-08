@@ -55,7 +55,7 @@ class MainController extends GetxController {
     } else {
       tes = currentSession!.copyWith(messageList: [...currentSession!.messageList, message]);
     }
-
+    _operation.getAllValues();
     _operation.addOrUpdateItem(toUser.phone.toString(), tes);
     _service.sendMessage(message);
   }

@@ -4,6 +4,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:safe_area/core/Data/Models/message_model.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
@@ -41,6 +42,7 @@ class SessionPage extends StatelessWidget with SessionPageMixin {
                     messages = [...messages, snapshot.data];
                   }
                   return ListView.builder(
+                    shrinkWrap: true,
                     controller: scrollController,
                     itemCount: messages.length + 1,
                     itemBuilder: (context, index) {
@@ -49,10 +51,10 @@ class SessionPage extends StatelessWidget with SessionPageMixin {
                       }
                       if (messages[index].from == currentUser.phone) {
                         return MessageBox(
-                            message: messages[index].message, isSee: messages[index].isSee, sendDate: messages[index].sendDate, own: false);
+                            message: messages[index].message, isSee: messages[index].isSee, sendDate: messages[index].sendDate, own: true);
                       } else if (messages[index].from == currentUser.phone) {
                         return MessageBox(
-                            message: messages[index].message, isSee: messages[index].isSee, sendDate: messages[index].sendDate, own: true);
+                            message: messages[index].message, isSee: messages[index].isSee, sendDate: messages[index].sendDate, own: false);
                       }
                     },
                   );
@@ -114,7 +116,7 @@ class SessionPage extends StatelessWidget with SessionPageMixin {
                                   controller: messageInputController,
                                   minLines: 1,
                                   maxLines: 5,
-                                  //onTap: () => chanceKeyboardType(KEYBOARD_TYPE.TEXTFIELD),
+                                  onTap: () => chanceKeyboardType(KEYBOARD_TYPE.TEXTFIELD),
                                   onChanged: (value) => chanceTextInputStatus(value),
                                   onEditingComplete: () {},
                                   onSubmitted: (value) {
@@ -251,7 +253,46 @@ class MessageBox extends StatelessWidget {
   final bool own;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    //https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html
+    String formattedTime = DateFormat.Hm().format(sendDate);
+    return Align(
+      alignment: own ? Alignment.centerRight : Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: Get.width - 45),
+        child: Card(
+          color: own ? Color(0xffdcf8c6) : Colors.white,
+          elevation: 1,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 60, top: 5, bottom: 20),
+                child: Text(message, style: TextStyle(fontSize: 16, color: Colors.black)),
+              ),
+              Positioned(
+                bottom: 4,
+                right: 10,
+                child: Row(
+                  children: [
+                    Text(
+                      formattedTime,
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    ),
+                    const SizedBox(width: 5),
+                    Icon(isSee ? Icons.done_all : Icons.done, size: 20, color: Colors.grey[600])
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+
+    /*
+
+     SizedBox(
       width: Get.width,
       child: Row(
         mainAxisAlignment: own ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -283,7 +324,8 @@ class MessageBox extends StatelessWidget {
           ),
         ],
       ),
-    );
+    )
+    */
   }
 }
 
