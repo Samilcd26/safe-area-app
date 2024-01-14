@@ -6,18 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import 'package:safe_area/core/Data/Models/message_model.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:safe_area/ui/Screens/producer/view.mixin.dart';
 
-import 'package:safe_area/ui/Screens/session/component/tool_box.dart';
-import 'package:safe_area/ui/Screens/session/viewModel/session_page_mixin.dart';
+import 'package:safe_area/ui/Screens/session/toolbox.dart';
+import 'package:safe_area/ui/Screens/session/view.mixin.dart';
 import 'package:safe_area/ui/theme/constants.dart';
 
 class SessionPage extends StatelessWidget with SessionPageMixin {
-  SessionPage({super.key, required this.toUser}) {}
+  SessionPage({super.key, required this.toUser, required this.answerMod}) {}
   // ignore: empty_constructor_bodies
   UserModel toUser;
+  EnumAnswer answerMod;
   get bottomInputBar => Get.height * 0.08;
 
   @override

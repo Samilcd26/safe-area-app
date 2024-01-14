@@ -18,7 +18,8 @@ class MainController extends GetxController {
   List<MessageModel> messageList = [];
   SessionModel? currentSession;
   List<SessionModel> allSessionList = <SessionModel>[].obs;
-  UserModel currentUser = Rx(UserModel(id: 1, userName: "Ahmet T", phone: 5530146669, publisher: true, questList: [66666]))();
+  UserModel currentUser = Rx(UserModel(
+      id: 1, firstName: "Ahmet", lastName: "Karaköt", userName: "AmhetTatat", phone: 5530146669, publisher: true, questList: [66666]))();
 
   Stream<MessageModel> getStreamData() => _service.getStreamMessage.getResponse();
 
@@ -32,9 +33,10 @@ class MainController extends GetxController {
   }
 
   //? roomId,from,to
-  void createRoom(UserModel toUser) {
-    //_service.createRoom(countryCode ?? "nll", currentUser.userName,);
+  void joinRoom(UserModel toUser) {
+    _service.joinRoom(currentUser.userName, toUser.userName);
   }
+
   Future<List<SessionModel>> getSessionData() async {
     await _operation.start();
     allSessionList = _operation.getAllValues();
@@ -61,7 +63,7 @@ class MainController extends GetxController {
   }
 
   void messageListener() {
-    _service.messageListener();
+    _service.messageListener(currentUser.phone.toString());
   }
 
   void disposeSession() {

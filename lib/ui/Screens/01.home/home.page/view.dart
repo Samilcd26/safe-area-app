@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safe_area/public/network.dart';
-import 'package:safe_area/ui/Screens/contacts/select_contact_page.dart';
+import 'package:safe_area/core/network.dart';
+import 'package:safe_area/ui/Screens/contacts/select.contact.page/view.dart';
 
-import 'package:safe_area/ui/Screens/home/viewModel/home_page_mixin.dart';
+import 'package:safe_area/ui/Screens/01.home/home.page/view.mixin.dart';
 import 'package:safe_area/ui/theme/constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         floatingActionButton: FloatingActionButton(
             child: Icon(tabController.index == 0 ? CupertinoIcons.person_solid : CupertinoIcons.person_3_fill),
             onPressed: () {
-              Get.to(const SelectContactPage());
+              Get.to(SelectContactPage());
             }),
         appBar: defaultHomeAppBarActions(),
         body: TabBarView(controller: tabController, children: myTabs),

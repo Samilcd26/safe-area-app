@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:safe_area/core/Data/Database/model/session_hive_operation.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:safe_area/core/Data/State/main_controller.dart';
-import 'package:safe_area/ui/Screens/root/root.dart';
+import 'package:safe_area/ui/Screens/00.root/view.dart';
 
 mixin SplashViewModel<T extends StatefulWidget> on State<T> {
   final SessionHiveOperation _sessionDatabaseOperation = SessionHiveOperation();

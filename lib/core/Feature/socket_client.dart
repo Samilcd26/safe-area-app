@@ -1,4 +1,4 @@
-import 'package:safe_area/public/network.dart';
+import 'package:safe_area/core/network.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketClient {

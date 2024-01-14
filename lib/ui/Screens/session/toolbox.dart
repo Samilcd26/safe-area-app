@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:safe_area/ui/Screens/session/viewModel/file_picker_mixin.dart';
+import 'package:safe_area/ui/Screens/session/filepicker.mixin.dart';
 
 class ToolBoxPart extends StatelessWidget with FilePickerMixin {
   ToolBoxPart({super.key});

@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
-import 'package:safe_area/ui/Screens/session/view/session_page.dart';
+import 'package:safe_area/ui/Screens/producer/view.mixin.dart';
+import 'package:safe_area/ui/Screens/session/view.dart';
 
-class ProducerProfilePage extends StatelessWidget {
+class ProducerProfilePage extends StatelessWidget with ProducerPageMixin {
   ProducerProfilePage({super.key});
-
-  UserModel jahrein = UserModel(id: 66666, userName: "Jahrein", phone: 9057874564, publisher: true, questList: []);
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +33,9 @@ class ProducerProfilePage extends StatelessWidget {
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
                 children: [
-                  const CircleAvatar(
-                    backgroundImage: NetworkImage("https://xsgames.co/randomusers/avatar.php?g=female"),
-                  ),
+                  // const CircleAvatar(
+                  //   backgroundImage: NetworkImage("https://xsgames.co/randomusers/assets/avatars/female/7.jpg"),
+                  // ),
                   Positioned(
                       bottom: -12,
                       right: -24,
@@ -77,7 +76,7 @@ class ProducerProfilePage extends StatelessWidget {
 
             ProductItem(Icons.call, "30 Dakikalık Görüşme", 60.0, () {}),
             ProductItem(Icons.call, "30 Dakikalık Görüşme", 60.0, () {}),
-            ProductItem(Icons.question_mark_rounded, "Soru", 20.0, () => Get.to(SessionPage(toUser: jahrein))),
+            AskTpe()
           ],
         ),
       ),

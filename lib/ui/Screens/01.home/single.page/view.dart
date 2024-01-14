@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
-
-import 'package:safe_area/ui/Components/event_select_box.dart';
-
-import 'package:safe_area/core/Data/State/main_controller.dart';
+import 'package:safe_area/ui/Screens/01.home/single.page/view.mixin.dart';
 
 class SinglePage extends StatefulWidget {
   SinglePage({super.key});
@@ -13,15 +9,14 @@ class SinglePage extends StatefulWidget {
   State<SinglePage> createState() => _SinglePageState();
 }
 
-class _SinglePageState extends State<SinglePage> {
-  final _controller = Get.put(MainController());
+class _SinglePageState extends State<SinglePage> with SinglePageMixin {
   Offset _tapPosition = Offset.zero;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FutureBuilder(
-          future: _controller.getSessionData(),
+          future: controller.getSessionData(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Column(
@@ -30,10 +25,7 @@ class _SinglePageState extends State<SinglePage> {
                   (index) => GestureDetector(
                       onLongPress: () => _showContextMenu(context),
                       onTapDown: (details) => _getTapPosition(details),
-                      child: EventSelectBox(
-                          user: snapshot.data![index].toUser,
-                          boxTitle: snapshot.data![index].toUser.userName,
-                          boxType: SELECT_BOX_TYPE.CREATE_SESSION)),
+                      child: ListItems(snapshot.data![index].toUser)),
                 ),
               );
             }

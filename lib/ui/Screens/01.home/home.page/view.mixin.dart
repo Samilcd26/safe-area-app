@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:safe_area/core/Data/Database/model/session_hive_operation.dart';
-import 'package:safe_area/ui/Screens/home/view/groups_page.dart';
-import 'package:safe_area/ui/Screens/home/view/single_page.dart';
+import 'package:safe_area/ui/Screens/01.home/groups.page/view.dart';
+import 'package:safe_area/ui/Screens/01.home/single.page/view.dart';
 
 mixin HomeMixin<T extends StatefulWidget> on State<T> {
   final SessionHiveOperation _sessionDatabaseOperation = SessionHiveOperation();

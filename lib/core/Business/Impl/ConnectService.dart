@@ -26,19 +26,7 @@ class ConnectService extends IConnectService {
   @override
   void sendMessage(MessageModel message) {
     streamMessage.addResponse(message.toJson());
-    _socketClient.emit(EVENT_TYPE.sentMessage, message);
-  }
-
-  //****************************************************************
-  @override
-  void createRoom(String countryCode, String from, String to) async {
-    String roomId = countryCode + from + to;
-    //TODO: İd içindeki boşlukları silmenin yolunu bul
-    roomId = roomId.replaceAll(RegExp(r'[^\w\s\b|\b\s]'), '');
-    roomId = roomId.replaceAll(RegExp(r'[^\u0000-\u007F]'), '');
-    _socketClient.emit(EVENT_TYPE.register, {from, to});
-
-    //dio.post('${CONNECTIONS.socketUrl}/createRoom', data: {'roomId': roomId, 'from': from, 'to': to});
+    _socketClient.emit(EVENT_TYPE.sentMessage, message.toJson());
   }
 
   //****************************************************************
@@ -55,8 +43,8 @@ class ConnectService extends IConnectService {
 
   //****************************************************************
   @override
-  void joinRoom() {
-    _socketClient.emit(EVENT_TYPE.register, (data) => {print(data)});
+  void joinRoom(String from, String to) {
+    _socketClient.emit(EVENT_TYPE.register, {from, to});
   }
 
 //****************************************************************
@@ -66,9 +54,9 @@ class ConnectService extends IConnectService {
   }
 //****************************************************************
   @override
-  void messageListener() {
+  void messageListener(String userNumber) {
     _socketClient.on(
-      EVENT_TYPE.sentMessage,
+      userNumber,
       (data) => streamMessage.addResponse(data),
     );
   }

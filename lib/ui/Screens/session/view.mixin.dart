@@ -8,7 +8,7 @@ import 'package:safe_area/core/Data/Database/model/session_hive_operation.dart';
 import 'package:safe_area/core/Data/Models/message_model.dart';
 import 'package:safe_area/core/Data/Models/user_model.dart';
 import 'package:safe_area/core/Data/State/main_controller.dart';
-import 'package:safe_area/ui/Screens/home/view/home_page.dart';
+import 'package:safe_area/ui/Screens/01.home/home.page/view.dart';
 
 mixin SessionPageMixin<T extends StatelessWidget> {
   final SessionHiveOperation _databaseOperation = SessionHiveOperation();

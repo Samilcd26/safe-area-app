@@ -14,13 +14,13 @@ abstract class IConnectService {
   void disposeListener();
   //************************************************************************************************
   //*Listener Event
-  void messageListener();
+  void messageListener(String userNumber);
   void createRoomSuccessListener();
   void joinRoomSuccessListener();
   void errorOccuredListener();
 
   //************************************************************************************************
   //*Room Events
-  void createRoom(String countryCode, String from, String to);
-  void joinRoom();
+
+  void joinRoom(String from, String to);
 }

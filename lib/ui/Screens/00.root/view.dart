@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:safe_area/ui/Screens/call/call_history_page.dart';
-import 'package:safe_area/ui/Screens/explore/explore_page.dart';
-import 'package:safe_area/ui/Screens/home/view/home_page.dart';
-import 'package:safe_area/ui/Screens/producer/producer_profile.dart';
+import 'package:safe_area/ui/Screens/02.call/call.history.page/view.dart';
 
-import 'package:safe_area/ui/Screens/profile/profile_page.dart';
-import 'package:safe_area/ui/Screens/root/root_mixin.dart';
+import 'package:safe_area/ui/Screens/01.home/home.page/view.dart';
+import 'package:safe_area/ui/Screens/producer/view.dart';
+
+import 'package:safe_area/ui/Screens/04.profile/view.dart';
+import 'package:safe_area/ui/Screens/00.root/view.mixin.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});

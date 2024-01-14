@@ -14,17 +14,26 @@ abstract class UserModel extends HiveObject with _$UserModel {
   @HiveType(typeId: HiveTypes.userModelId)
   factory UserModel({
     @HiveField(0) required int id,
-    @HiveField(1) required String userName,
-    @HiveField(2) required int phone,
-    @HiveField(3) required List<int> questList,
-    @HiveField(4) required bool publisher,
+    @HiveField(1) required String firstName,
+    @HiveField(2) required String lastName,
+    @HiveField(3) required String userName,
+    @HiveField(4) required int phone,
+    @HiveField(5) required List<int> questList,
+    @HiveField(6) required bool publisher,
   }) = _UserModel;
 
   factory UserModel.fromContact(Contact contact) {
     //TODO:
     final int phone = int.parse(contact.phones.first.number.replaceAll(' ', '').replaceAll('-', '').replaceAll('+', '').substring(1));
 
-    return UserModel(id: phone, userName: contact.displayName, phone: phone, publisher: false, questList: []);
+    return UserModel(
+        id: phone,
+        firstName: contact.name.first,
+        lastName: contact.name.last,
+        userName: contact.displayName,
+        phone: phone,
+        publisher: false,
+        questList: []);
   }
 
   factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);

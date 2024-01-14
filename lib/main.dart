@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:safe_area/core/Data/Database/hive_database_manager.dart';
 
-import 'package:safe_area/ui/Screens/splash/splash_screen.dart';
+import 'package:safe_area/ui/Screens/splash/view.dart';
 import 'package:safe_area/ui/theme/my_themes.dart';
 
 final class _AppInitialize {
